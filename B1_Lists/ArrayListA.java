@@ -10,7 +10,7 @@ public class ArrayListA {
         primzahlen.add(5);
 
         System.out.println(primzahlen);
-        
+
         primzahlen.remove(2);
 
         for (Integer i : primzahlen) {
