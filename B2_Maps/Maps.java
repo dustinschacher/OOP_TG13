@@ -4,8 +4,6 @@ class Maps {
 
   public static void main(String[] args) {
 
-    TestKlasse t = new TestKlasse();
-
     // Create a HashMap object called people
     HashMap<String, Integer> people = new HashMap<String, Integer>();
 
