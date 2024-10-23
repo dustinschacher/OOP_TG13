@@ -1,145 +1,110 @@
-# Maps in Java
+# Verzeichnisse-Maps (Collections)
+Die Schnittstelle Map im Java Collections Framework erlaubt die Benutzung von Verzeichnissen (engl. Dictionary). Verzeichnisse sind Datenstrukturen in denen man Objekte organisiert nach einem beliebigen Schlüssel verwalten kann. Maps sind Modelle mathematischer Funktionen die einen gegebenen Wert einer Schlüsselmenge auf eine Zielmenge abbilden.
 
-In Java ist eine Map eine Datenstruktur, die Schlüssel Wert Paare speichert. Jedes Schlüssel Wert Paar wird als Eintrag in der Map betrachtet. Die Map-Schnittstelle gehört zum Java Collections Framework und bietet verschiedene Implementierungen, darunter `HashMap`, `TreeMap` und `LinkedHashMap`.
+Maps funktionieren wie ein Wörterbuch. Man kann man sie als Tabellen mit zwei Spalten verstehen. In der ersten Spalte steht der Zugriffsschlüssel mit dem man nach einem Objekt sucht, in der zweiten Spalte steht das Objekt welches zu einem gegebenen Schlüssel gehört. Hierdurch werden zwei Objekte in eine Beziehung gesetzt.
 
-## Grundlagen
+## Anwendungsbeispiel
+In einer Java-Map kann man zum Beispiel Kraftfahrzeuge und deren Halter verwalten. Da ein Kraftfahrzeug genau einen Halter hat, verwendet man das Kraftfahrzeug als Schlüsselobjekt. Die Person die das Fahrzeug besitzt wird als Wert verwaltet. Fügt man dieses Tupel von Schlüsselobjekt und Zielobjekt in die Datenstruktur ein, kann man zu jedem gegebenen Fahrzeug den Halter ausgegeben.
 
-### Was ist eine Map?
+![](Map1.png)
 
-- **Schlüssel**: Ein einzigartiger Identifikator für jeden Eintrag.
-- **Wert**: Die Information, die mit dem Schlüssel verknüpft ist.
-- Ein Schlüssel kann nur einmal in einer Map vorhanden sein, aber mehrere Schlüssel können den gleichen Wert haben.
+In Java-Maps müssen die Schlüssel eindeutig sein. Jedes Kfz kann daher nur einmal vorkommen. Die verwalteten Werte müssen nicht eindeutig sein. Im Beispiel oben besitzt die Person Müller zwei Kfz.
 
-### Wichtige Methoden
+## Abgrenzung zu Objektattributen
+Die oben aufgeführten Beispiel benutzte Beziehung zwischen einem Kraftfahrzeug und einem Halter kann man natürlich ebenso gut direkt mit Hilfe von Referenzen in den zwei Klassen modellieren.
 
-- `put(K key, V value)`: Fügt ein Schlüssel-Wert-Paar zur Map hinzu.
-- `get(Object key)`: Gibt den Wert zurück, der mit dem angegebenen Schlüssel verknüpft ist.
-- `remove(Object key)`: Entfernt das Schlüssel-Wert-Paar für den angegebenen Schlüssel.
-- `containsKey(Object key)`: Überprüft, ob ein bestimmter Schlüssel in der Map vorhanden ist.
-- `keySet()`: Gibt eine Set-Ansicht der Schlüssel in der Map zurück.
-- `values()`: Gibt eine Collection-Ansicht der Werte in der Map zurück.
+Der Vorteil einer Java Map besteht darin, dass man diese Beziehung dynamisch in einem Javaobjekt modelliert und nicht permanent als Objekteigenschaft. Das Verwalten dieser Beziehung in einem Objekt hat die folgenden Vorteile:
 
-## Implementierungen von Maps
+- Man kann die Beziehung modellieren ohne die Klassen zu modifizieren
+- Man kann jederzeit neue Beziehungen modellieren (z.Bsp Kraftfahrzeug<->Fahrer, Kraftfahrzeug<->Betreuer etc.)
+- Man kann zusätzliche Operationen des Java Collection Frameworks ausnutzen um die Daten zu bearbeiten. Man kann z.Bsp.
+    a) über alle Schlüssel iterieren (was ist die Menge der Kraftfahrzeuge?)
+    b) über alle Objekte iterieren (was ist die Menge der Halter? Es kann mehrere Krfatfahrzeuge für einen gegebenen Halter existieren!)
 
-### 1. HashMap
+## Klassenstruktur
+Die Map-Klassen des Java Collections Framework werden nicht wie die anderen Klassen des Frameworks aus der Klasse Collection abgeleitet. Man kann jedoch mit Hilfe der Methoden keySet() und values() über die die Schlüssel oder über die eigentlichen Objekte iterieren.
 
-Eine `HashMap` speichert die Daten in einer Hash-Tabelle.
-#### Vorteile: 
-- Sehr schnelle Zugriffszeiten für Hinzufügen, Abrufen und Entfernen von Einträgen
-- Erlaubt mehrere Null Werte
-#### Nachteile:
-- keine Ordnung, Reihenfolge kann durch Hinzufügen/Entfernen von Objekten verändert werden
-- Nicht Synchronisiert --> nicht Thread sicher, d.H. Wenn mehrere Threads gleichzeitig auf sie zugreifen, kann dies zu ungleichmäßigen Zuständen führen. 
+![](Map2.png)
 
-#### Verwendung: 
-- Schneller Zugriff auf Daten
-- Zählen von Häufigkeiten wie in z.B. Word
-- Datenbank Simulation
+## Klasse HashMap
+HashMap<K,V> benutzt wie die Klasse HashSet einen Hash-Code für die Schlüssel mit deren Hilfe die Objekte verwaltet werden. Dadurch hat sie auch die gleichen Leistungseigenschafen wie die Klasse HashSet (in Bezug auf die Schlüssel).
 
-#### Beispiel
----
+Die Klasse HashMap erlaubt es beliebige Klassen als Schlüssel zu verwenden. Die einzige Bedingung ist, dass die Methoden equals() und hashCode() für diese Klassen implementiert sind (triviale Implementierungen existieren bereits in der Klasse Object).
+
+## Klasse TreeMap
+Die Klasse TreeMap implementiert die Schnittstelle SortedMap. Hierdurch wird sicher gestellt, das Objekte beim Einfügen direkt sortiert eingefügt werden. Die Schlüssel sind also bereits sortiert und erlauben eine effiziente Iteration in der Sortierreihenfolge.
+
+Durch die sortierten Schlüssel ist es zum Beispiel möglich mit Hilfe der Schnittstellenmethoden von SortedMap einen Teilbereich auszuwählen. Ein Verzeichnis welches Zeichketten (Strings) als Schlüssel verwendet kann man z.Bsp. auf die folgende Weise einen Bereich erzeugen der alle Zeichenketten zwischen den Stringvariablen low und high enthält:
+
+```java
+SortedMap<String, V> sub = m.subMap(low, high+"\0");
+```
+## Weitere Klassen
+Die Klasse `EnumMap` erlaubt das Verwalten von Aufzählungstypen (wie auch die Klasse EnumSet).
+
+Die Klasse `WeakHashMap` erlaubt die Verwaltung schwacher Referenzen. Schwach referenzierte Objekte können in Java bei Bedarf vom Garbage Collector gelöscht werden. Sie benötigen daher eine gewisse Sonderbehandlung.
+
+## Ausgewählte Methoden für Maps
+Die Schnittstelle Map hat sehr viele Methoden, die man am besten in der Online API Dokumentation nachliest. Die wichtigsten Methoden werden hier kurz vorgestellt:
+
+## Konstruktor
+Die Konstruktoren sind nicht Teil der Schnittstelle. Sie hängen von den individuellen Ausprägungen ab. Anbei zwei Beispiele zum Erzeugen von Map-objekten wie sie im Beispiel oben gezeigt wurden:
+
 ```java
 import java.util.HashMap;
-
-public class HashMapExample {
-    public static void main(String[] args) {
-        HashMap<String, Integer> map = new HashMap<>();
-        
-        // Elemente hinzufügen
-        map.put("Apfel", 1);
-        map.put("Banane", 2);
-        map.put("Orange", 3);
-        
-        // Wert abrufen
-        System.out.println("Wert für 'Banane': " + map.get("Banane"));
-        
-        // Alle Schlüssel und Werte durchlaufen
-        for (String key : map.keySet()) {
-            System.out.println(key + ": " + map.get(key));
-        }
-        
-        // Schlüssel entfernen
-        map.remove("Apfel");
-        System.out.println("Nach Entfernen: " + map);
-    }
-}
-```
----
-## 2. Treemap 
-
-#### Eigenschaft (Vorteil):
--  Eine Treemap wird in ihrer "Natürlichen Reihenfolge" sortiert, so z.B. bei Strings Alphabetisch
-
-#### Verwendung: 
-- Überall wo etwas sortiert sein Muss z.B. 
-- Ranglisten
-- Telefonbuch
-#### Nachteile:
-- Langsamer als Hashmap
-- erlaubt keine Null Werte --> NullPointerException
-
-
-#### Beispiel:
----
-```Java
-
 import java.util.TreeMap;
-
-public class TreeMapExample {
-    public static void main(String[] args) {
-        TreeMap<String, Integer> treeMap = new TreeMap<>();
-        
-        // Elemente hinzufügen
-        treeMap.put("Banane", 2);
-        treeMap.put("Apfel", 1);
-        treeMap.put("Orange", 3);
-        
-        // Alle Schlüssel und Werte in sortierter Reihenfolge durchlaufen
-        for (String key : treeMap.keySet()) {
-            System.out.println(key + ": " + treeMap.get(key));
-        }
-    }
-}
+import Person;
+import Kfz;
+Map<Kfz,Person> halterMapsortiert   = new TreeMap<Kfz,Person>();
+Map<Kfz,Person> halterMapunsortiert = new HashMap<Kfz,Person>();
 ```
----
-## 3. Linked Hashmap
-#### Eigenschaft
-- Die `Linked Hashmap` ist eine Unterklasse der `Hashmap` und hat daher alle Eigenschaften der `Hashmap`
-- Zur speicherung der Daten wird eine doppelt verkettete Liste verwendet um die Reihenfolge der Einführung beizubehalten
 
-#### Vorteile: 
-- Behält einführungs Reihenfolge ein 
-- Ähnliche Leistung wie `Hashmap`
-- Option zur LRU (least recently used) Reihenfolge --> Sortier nach Nutzung
+## Hinzufügen: `put(K key, V value)`
+Tupel von Schlüsseln und Werten können mit der put(K key,V value) Methode hinzugefügt werden. Zwei Tupel für das obige Beispiel werden mit der folgenden Syntax eingefügt:
 
-#### Nachteile:
-- Benötigt mehr Speicherplatz
-- Geringfügig langsamer als Hashmap
-- Ebenfalls keine Thread Synchronisierung 
-
-#### Verwendung: 
-- Datenbank Abfrage mit geordneter Ausgabe
-- Datenverwaltung mit geordneter Einführung
-
-#### Beispiel:
----
-```Java 
-import java.util.LinkedHashMap;
-
-public class LinkedHashMapExample {
-    public static void main(String[] args) {
-        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
-        
-        // Elemente hinzufügen
-        linkedHashMap.put("Banane", 2);
-        linkedHashMap.put("Apfel", 1);
-        linkedHashMap.put("Orange", 3);
-        
-        // Alle Schlüssel und Werte in der Einfügereihenfolge durchlaufen
-        for (String key : linkedHashMap.keySet()) {
-            System.out.println(key + ": " + linkedHashMap.get(key));
-        }
-    }
-}
+```java
+Person p = new Person("Müller");
+Kfz wagen1 = new Kfz("D-U-3",3456789);
+Kfz wagen2 = new Kfz("M-V-4",4567890);
+halterMapsortiert.put(wagen1,p);
+halterMapsortiert.put(wagen2,p);
 ```
----
+
+## Methode `get(Object key)`: Auslesen eines Wertes zu einem gegebenen Schlüssel
+Die "klassische" Verzeichnisoperation ist das Auslesen eines Wertes zu einem gegebenen Schlüssel. Hierzu dient die `get(Object key)` Methode. Im obigen Beispiel kann man die Person "Müller" finden wenn man eines der Fahrzeuge dieser Person kennt. Die geschieht mit der folgenden Syntax:
+
+```java
+Person p = halterMapsortiert.get(wagen2);
+```
+
+## Methode `keySet()`: Auslesen alle Schlüsselelemente
+Java-Maps erlauben auch das Auslesen aller Schlüssel mit der Methode keySet().
+
+Man kann sich im obigen Beispiel die Menge (Javatyp Set) aller Kfz-objekte dem folgenden Kommando auslesen:
+
+```java
+Set<Kfz> KfzSet = halterMapsortiert.keySet();
+```
+Die neu erzeugte Menge zeigt auf die gleichen Schlüsselobjekte wie die Map:
+
+![](Map3.png)
+
+Zum Auslesen der Mengenelemente muss man dann einen Mengeniterator anwenden.
+
+## Methode `values()`: Auslesen aller Werte
+Die Werte der Map werden mit der Methode `values()` ausgelesen. Im Beispiel von oben würde man die Werte der Map mit dem folgenden Befehl auslesen:
+
+```java
+Person p;
+Collection<Person> personColl = halterMapsortiert.values();
+Iterator<Person> iterPerson = personColl.iterator();
+   while (iterPerson.hasNext()) {
+      p = iterPerson.next();
+      System.out.println("Person: " + p);
+  }
+```
+Die zurückgebene Datenstruktur hat den Typ Collection. Der genaue Typ der Collection hängt von der gewählten Mapimplementierung ab.
+
+![](Map4.png)
+
+Quelle: [scalingbits](http://www.scalingbits.com/java/javakurs2/programmieren2/collection/maps)
