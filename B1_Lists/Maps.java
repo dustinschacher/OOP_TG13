@@ -1,3 +1,4 @@
+package B1_Lists;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.LinkedHashMap;
@@ -26,7 +27,7 @@ public class Maps {
     
    
         // Elemente hinzufügen
-        TreeMap<String, Integer> treeMap = new 
+        TreeMap<String, Integer> treeMap = new TreeMap<>();
         treeMap.put("Banane", 2);
         treeMap.put("Apfel", 1);
         treeMap.put("Orange", 3);
