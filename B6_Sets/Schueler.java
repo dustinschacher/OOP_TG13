@@ -1,3 +1,4 @@
+package B6_Sets;
 public class Schueler {
     
     String name;
