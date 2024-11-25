@@ -10,7 +10,7 @@ public class Sets3 {
         Set<Integer> erstesSet = new HashSet<Integer>();
         erstesSet.addAll(Arrays.asList(new Integer[] {1, 2, 3, 5, 0 }));
         Set<Integer> zweitesSet = new HashSet<Integer>();
-        zweitesSet.addAll(Arrays.asList(new Integer[] {1, 3, 4, 5, 6, 7, 5}));
+        zweitesSet.addAll(Arrays.asList(new Integer[] {1, 3, 4, 5, 6, 7, 2}));
 
         System.out.println(erstesSet);
         System.out.println(zweitesSet);

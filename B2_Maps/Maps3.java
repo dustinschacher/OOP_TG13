@@ -25,12 +25,6 @@ class Maps3 {
         map.put(s2, p3);
         map.put(s3, p1);
 
-        // Elements can traverse in any order
-       System.out.println("\n----- Parkplätze der Schueler ---------");
-       for (Map.Entry m : map.entrySet()) {
-            System.out.println(m.getKey() + " " + m.getValue());
-        }
-
         //Schuelerliste
         System.out.println("\n----- Schuelerliste ---------");
         List<Schueler> schuelerliste = new ArrayList<>(map.keySet());
@@ -38,14 +32,12 @@ class Maps3 {
             System.out.println(schueler);
         }
 
-
         //Parkplatzliste
          System.out.println("\n----- Parkplatzliste ---------");
         List<Parkplatz> parkplatzliste = new ArrayList<>(map.values());
         for (Parkplatz parkplatz : parkplatzliste) {
             System.out.println(parkplatz);
         }
-
 
         //Parkplatz eines Schuelers bestimmen
         System.out.println("\n----- Parkplatz eines Schuelers ---------");
