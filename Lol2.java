@@ -13,7 +13,7 @@ public class Lol2 {
             System.out.print(c + " ");
         }
 
-        LinkedList<Character> alphabetList = new LinkedList<>(); //c)
+        LinkedList<Character> alphabetList = new LinkedList<>(); //c) "Für jedes Zeichen c im Array alphabetArray, füge dieses Zeichen in die alphabetList ein."
         for (char c : alphabetArray) {
             alphabetList.add(c);
         }
